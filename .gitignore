@@ -1,4 +1,3 @@
 node_modules
 secret.js
-./server/seed.js
-server
+server/seed.js
