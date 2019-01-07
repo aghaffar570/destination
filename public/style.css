@@ -113,6 +113,22 @@ select {
   outline: none;
 }
 
+.delete-btn {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  background: #bd546e;
+  border: 0;
+  color: #fff;
+  outline: none;
+  margin: 5px;
+}
+
+.delete-btn:hover {
+  background: #9b364f;
+}
+
 .options-btn:hover {
   background: #4283aa;
 }

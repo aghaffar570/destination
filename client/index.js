@@ -20,20 +20,25 @@ marker.addTo(map);
 let destinationData = {}
 
 
-fetch('/api')
+fetch('/api') // this is asyncronous. Everything comes before this call.
   .then(res => res.json())
   .then(data => {
     let [ hotels, activities, restaurants ] = data;
-    // after retrieve data
+
     destinationData = { hotels, activities, restaurants }
-    // allow dom maninpulation
-    console.log(hotels, activities, restaurants)
+
+    // console.log(hotels, activities, restaurants)
     addToDom(hotels, 'hotels');
     addToDom(activities, 'activities');
     addToDom(restaurants, 'restaurants');
 
-  const addHotel = document.getElementById('hotels-add')
-  addHotel.addEventListener('click', () => { addToItinerary(hotels) })
+    const addBtns = document.querySelectorAll('button')
+    addBtns.forEach(btn => {
+      const idxEnd = btn.id.indexOf('-');
+      const btnType = btn.id.slice(0, idxEnd);
+      const selectedItems = destinationData[btnType]
+      btn.addEventListener('click', () => { return addToItinerary(selectedItems, btnType) })
+    })
   })
   .catch(console.error)
 
@@ -48,16 +53,25 @@ function addToDom (items, choiceId) {
 }
 
 
-function addToItinerary (e, items) {
-  const selectedValue = document.getElementById('hotels-choices').value;
-  const list = document.getElementById('hotels-list');
+function addToItinerary (items, choiceId) {
+  // get selected value from option && place to display value
+  const selectedValue = document.getElementById(`${choiceId}-choices`).value;
+  const list = document.getElementById(`${choiceId}-list`);
 
   const newItem = document.createElement('li');
   newItem.innerHTML = selectedValue;
   list.appendChild(newItem)
+  const newBtn = document.createElement('button');
+  newBtn.innerHTML = '-';
+  newBtn.classList.add('delete-btn')
+  newItem.appendChild(newBtn)
 
-  console.log('IN CLICL', items)
-  const item = items.filter(i => i.name === selectedValue);
-  const marker = createMarker('hotels', item.place.location);
+  // add marker to map for selected value
+  const item = items.filter(i => i.name === selectedValue)[0];
+  const marker = createMarker(choiceId, item.place.location);
   marker.addTo(map);
 }
+
+
+const btns = document.querySelectorAll('button')
+console.log(btns)
