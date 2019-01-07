@@ -12,15 +12,15 @@ const map = new mapboxgl.Map({
   style: "mapbox://styles/mapbox/streets-v10"
 });
 
-const marker = createMarker('activity', [-73.9973, 40.7308])
-marker.addTo(map);
+// const marker = createMarker('activity', [-73.9973, 40.7308])
+// marker.addTo(map);
 
 
 
 let destinationData = {}
 
 
-fetch('/api') // this is asyncronous. Everything comes before this call.
+fetch('/api') // this is asyncronous. Everything will run before this call.
   .then(res => res.json())
   .then(data => {
     let [ hotels, activities, restaurants ] = data;
@@ -33,12 +33,7 @@ fetch('/api') // this is asyncronous. Everything comes before this call.
     addToDom(restaurants, 'restaurants');
 
     const addBtns = document.querySelectorAll('button')
-    addBtns.forEach(btn => {
-      const idxEnd = btn.id.indexOf('-');
-      const btnType = btn.id.slice(0, idxEnd);
-      const selectedItems = destinationData[btnType]
-      btn.addEventListener('click', () => { return addToItinerary(selectedItems, btnType) })
-    })
+    addBtns.forEach(addListenerToBtn)
   })
   .catch(console.error)
 
@@ -52,32 +47,51 @@ function addToDom (items, choiceId) {
   })
 }
 
+function addListenerToBtn (btn) {
+  const idxEnd = btn.id.indexOf('-');
+  const btnType = btn.id.slice(0, idxEnd);
+  const selectedItems = destinationData[btnType]
+  btn.addEventListener('click', () => { return addToItinerary(selectedItems, btnType) })
+}
 
 function addToItinerary (items, choiceId) {
-  // get selected value from option && place to display value
   const selectedValue = document.getElementById(`${choiceId}-choices`).value;
   const list = document.getElementById(`${choiceId}-list`);
 
-  // add marker to map for selected value
-  const item = items.filter(i => i.name === selectedValue)[0];
-  const marker = createMarker(choiceId, item.place.location);
-  marker.addTo(map);
+  const marker = displayMarker(items, selectedValue, choiceId);
 
+  const newListItem = createNewListItem(list, selectedValue);
+  createNewDeleteBtn(newListItem, marker);
+}
+
+function createNewListItem(parentItem, value) {
   const newItem = document.createElement('li');
-  newItem.innerHTML = selectedValue;
-  list.appendChild(newItem)
+  newItem.innerHTML = value;
+  parentItem.appendChild(newItem)
+  return newItem;
+}
 
+
+function createNewDeleteBtn(parentItem, marker) {
   const newBtn = document.createElement('button');
   newBtn.innerHTML = '-';
   newBtn.classList.add('delete-btn')
-  newBtn.addEventListener('click', () => { return deleteFromItinerary(newItem, marker) })
-  newItem.appendChild(newBtn)
+  newBtn.addEventListener('click', () => { return deleteFromItinerary(parentItem, marker) })
+  parentItem.appendChild(newBtn)
+  return newBtn;
+}
+
+function displayMarker (listItems, value, type) {
+  const item = listItems.filter(i => i.name === value)[0];
+  const marker = createMarker(type, item.place.location);
+  marker.addTo(map);
 
   map.flyTo({
     center: item.place.location,
     speed: 0.2,
     curve: 1
   })
+  return marker
 }
 
 function deleteFromItinerary(item, marker) {
