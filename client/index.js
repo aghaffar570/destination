@@ -58,20 +58,28 @@ function addToItinerary (items, choiceId) {
   const selectedValue = document.getElementById(`${choiceId}-choices`).value;
   const list = document.getElementById(`${choiceId}-list`);
 
-  const newItem = document.createElement('li');
-  newItem.innerHTML = selectedValue;
-  list.appendChild(newItem)
-  const newBtn = document.createElement('button');
-  newBtn.innerHTML = '-';
-  newBtn.classList.add('delete-btn')
-  newItem.appendChild(newBtn)
-
   // add marker to map for selected value
   const item = items.filter(i => i.name === selectedValue)[0];
   const marker = createMarker(choiceId, item.place.location);
   marker.addTo(map);
+
+  const newItem = document.createElement('li');
+  newItem.innerHTML = selectedValue;
+  list.appendChild(newItem)
+
+  const newBtn = document.createElement('button');
+  newBtn.innerHTML = '-';
+  newBtn.classList.add('delete-btn')
+  newBtn.addEventListener('click', () => { return deleteFromItinerary(newItem, marker) })
+  newItem.appendChild(newBtn)
+
+  map.flyTo({
+    center: item.place.location,
+    speed: 0.2,
+    curve: 1
+  })
 }
 
-
-const btns = document.querySelectorAll('button')
-console.log(btns)
+function deleteFromItinerary(item, marker) {
+  item.remove(); marker.remove()
+}
