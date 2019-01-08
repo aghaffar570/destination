@@ -17,7 +17,14 @@ const map = new mapboxgl.Map({
 
 
 
-let destinationData = {}
+const state = {
+  attractions: {
+    hotels: [],
+    restaurants: [],
+    activities: []
+  },
+  selectedAttractions: []
+};
 
 
 fetch('/api') // this is asyncronous. Everything will run before this call.
@@ -25,7 +32,7 @@ fetch('/api') // this is asyncronous. Everything will run before this call.
   .then(data => {
     let [ hotels, activities, restaurants ] = data;
 
-    destinationData = { hotels, activities, restaurants }
+    state.attractions = { hotels, activities, restaurants }
 
     // console.log(hotels, activities, restaurants)
     addToDom(hotels, 'hotels');
@@ -50,16 +57,19 @@ function addToDom (items, choiceId) {
 function addListenerToBtn (btn) {
   const idxEnd = btn.id.indexOf('-');
   const btnType = btn.id.slice(0, idxEnd);
-  const selectedItems = destinationData[btnType]
+  const selectedItems = state.attractions[btnType]
   btn.addEventListener('click', () => { return addToItinerary(selectedItems, btnType) })
 }
 
 function addToItinerary (items, choiceId) {
+
   const selectedValue = document.getElementById(`${choiceId}-choices`).value;
   const list = document.getElementById(`${choiceId}-list`);
 
-  const marker = displayMarker(items, selectedValue, choiceId);
+  if(!state.selectedAttractions.includes(selectedValue)) state.selectedAttractions.push(selectedValue)
+  else return;
 
+  const marker = displayMarker(items, selectedValue, choiceId);
   const newListItem = createNewListItem(list, selectedValue);
   createNewDeleteBtn(newListItem, marker);
 }
@@ -95,5 +105,6 @@ function displayMarker (listItems, value, type) {
 }
 
 function deleteFromItinerary(item, marker) {
+  console.log(item.textContent, state.selectedAttractions)
   item.remove(); marker.remove()
 }
