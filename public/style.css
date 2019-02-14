@@ -1,69 +1,79 @@
+/*
+=====================
+global
+=====================
+*/
+
 * {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color:#2f3f46;
 }
 
+/*
+=====================
+header
+=====================
+*/
+
+
+
 header {
   text-align: center;
-  color: #cecece;
+  height: 40px;
+  background: #eee;
 }
+
+/*
+=====================
+main
+=====================
+*/
+
 
 .container {
   display: flex;
 }
 
-/* #map {
-  height: 100%;
-  width: 70%;
+
+#map {
+  width: 60%;
+  height: 400px;
+  margin: 15px;
+  border-radius: 5px;
 }
 
-.selections {
-  width: 30%;
-  background: skyblue;
-} */
+.map-controls {
+  width: 40%;
+  height: 100vh;
+  background: teal;
+}
 
-.options, .itinerary {
+aside {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* .options, .itinerary {
   margin: 30px;
   background: #eee;
-}
-
-/* @media (max-width: 530px) {
-  .container {
-    flex-direction: column;
-    padding: 10px;
-  }
-  #map, .selections {
-    width: 100%;
-    height: 100%;
-  }
-  .selections {
-    margin-top: 10px;
-  }
 } */
-
 
 
 h2 {
   margin: 0 0 0.5rem 0;
-  font-family: 'Lobster', cursive;
   font-weight: normal;
   font-size: 1.2rem;
 }
 
 
-
-#map {
-  flex: 2;
-  height: calc(100vh - 3rem);
-  overflow: hidden;
-}
-
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) { /*lower than 600px*/
   .container {
     flex-direction: column
   }
@@ -73,11 +83,6 @@ h2 {
   }
 }
 
-aside {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
 
 .panel {
   margin: 1rem;
