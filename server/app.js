@@ -32,10 +32,10 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 })
 
-db.sync()
+app.listen(PORT, () => {
+  console.log(`Now listening to port ${PORT}`);
+  db.sync()
   .then(() => {
     console.log('DB synced!');
-    app.listen(PORT, () => {
-      console.log(`Now listening to port ${PORT}`);
-    });
   });
+});
