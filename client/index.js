@@ -116,8 +116,8 @@ function viewSelectedItem(attractionName, attractionCategory) { // view item on 
   }
 
   console.log(selectedItem)
-  itemName.textContent = selectedItem.name
-  itemLocation.textContent =
+  itemName.textContent = 'Name: ' + selectedItem.name
+  itemLocation.textContent = 'Location ' +
     `${selectedItem.place.address}
     ${selectedItem.place.city}, ${selectedItem.place.state}
     ${selectedItem.place.phone}
@@ -126,6 +126,12 @@ function viewSelectedItem(attractionName, attractionCategory) { // view item on 
   <h4>${desc1}: ${selectedItem[desc1]}</h4>
   <h4>${desc2}: ${selectedItem[desc2]}</h4>
   `
+
+  map.flyTo({ // zooms to location
+    center: selectedItem.place.location,
+    speed: 0.2,
+    curve: 1
+  })
 
 }
 
