@@ -5,6 +5,8 @@ const path = require('path');
 const db = require('./db');
 const app = express();
 
+const PORT = process.env.PORT || 8080;
+
 // logging middleware
 app.use(morgan('dev'));
 
@@ -33,7 +35,7 @@ app.use((err, req, res, next) => {
 db.sync()
   .then(() => {
     console.log('DB synced!');
-    app.listen(3000, () => {
-      console.log(`Now listening to port ${3000}`);
+    app.listen(PORT, () => {
+      console.log(`Now listening to port ${PORT}`);
     });
   });
