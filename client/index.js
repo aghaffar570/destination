@@ -40,15 +40,13 @@ fetch('/api') // this is asynchronous. Everything will run before this call.
     let [ hotels, activities, restaurants ] = data;
     state.attractions = { hotels, activities, restaurants } // store in state
 
-    console.log(hotels, activities, restaurants)
+    // console.log(hotels, activities, restaurants)
     // populate all option data to the respective selections
     addOptionsToDom(hotels, 'hotels');
     addOptionsToDom(activities, 'activities');
     addOptionsToDom(restaurants, 'restaurants');
 
-    const addBtns = document.querySelectorAll('button')
-    console.log(addBtns, 'addBTNS');
-
+    const addBtns = document.querySelectorAll('button') // btns for each selection
     addBtns.forEach(addListenerToBtn)
   })
   .catch(console.error)
@@ -86,16 +84,51 @@ function addToItinerary (attractionItems, category) { // adds item to itinerary 
   const marker = displayMarker(attractionItems, selectedValue, category);
 
   // add item to dom list with its corresponding delete btn
-  const newListItem = createNewListItem(list, selectedValue);
+  const newListItem = createNewListItem(list, selectedValue, category);
   createNewDeleteBtn(newListItem, marker);
 }
 
-function createNewListItem(parentItem, value) { // creates new li tag
+function createNewListItem(parentItem, value, category) { // creates new li tag
   const newItem = document.createElement('li');
   newItem.innerHTML = value;
+  newItem.classList.add('view-item')
+  newItem.addEventListener('click', () => { return viewSelectedItem(value, category)})
   parentItem.appendChild(newItem)
   return newItem;
 }
+
+function viewSelectedItem(attractionName, attractionCategory) { // view item on the dom
+  const selectedItem = state.attractions[attractionCategory].filter(item => item.name === attractionName)[0]
+  const itemName = document.querySelector('.itemName')
+  const itemLocation = document.querySelector('.itemLocation')
+  const extarInfo = document.querySelector('.extra-info')
+  let desc1 = null;
+  let desc2 = null;
+  if(attractionCategory === 'restaurants') {
+    desc1 = 'cuisine'
+    desc2 = 'price'
+  }else if (attractionCategory === 'activities') {
+    desc1 = 'age_range'
+    desc2 = 'BLANK'
+  }else if (attractionCategory === 'hotels') {
+    desc1 = 'num_stars'
+    desc2 = 'amenities'
+  }
+
+  console.log(selectedItem)
+  itemName.textContent = selectedItem.name
+  itemLocation.textContent =
+    `${selectedItem.place.address}
+    ${selectedItem.place.city}, ${selectedItem.place.state}
+    ${selectedItem.place.phone}
+    `
+  extarInfo.innerHTML = `
+  <h4>${desc1}: ${selectedItem[desc1]}</h4>
+  <h4>${desc2}: ${selectedItem[desc2]}</h4>
+  `
+
+}
+
 
 function displayMarker (listItems, value, categoryType) { // adds marker and zooms-in on location
   const item = listItems.filter(i => i.name === value)[0]; // grab item with all its info
