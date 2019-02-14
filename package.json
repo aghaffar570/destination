@@ -8,7 +8,6 @@
     "start-server": "nodemon server/app.js --ignore public",
     "build-watch": "webpack -w",
     "start": "npm run start:dev",
-    "deploy": "deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
