@@ -117,7 +117,7 @@ function viewSelectedItem(attractionName, attractionCategory) { // view item on 
 
   console.log(selectedItem)
   itemName.textContent = 'Name: ' + selectedItem.name
-  itemLocation.textContent = 'Location ' +
+  itemLocation.textContent = 'Location: ' +
     `${selectedItem.place.address}
     ${selectedItem.place.city}, ${selectedItem.place.state}
     ${selectedItem.place.phone}
