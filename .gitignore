@@ -2,3 +2,5 @@ node_modules
 secret.js
 server/seed.js
 public/bundle.js
+.DS_Store
+deploy

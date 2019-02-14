@@ -1,17 +1,18 @@
 {
   "name": "destination",
   "version": "1.0.0",
-  "description": "",
+  "description": "simple destination tracker",
   "main": "index.js",
   "scripts": {
     "start:dev": "npm run start-server & npm run build-watch",
     "start-server": "nodemon server/app.js --ignore public",
     "build-watch": "webpack -w",
     "start": "npm run start:dev",
+    "deploy": "deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "aghaffar570",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^1.18.10",
@@ -27,5 +28,8 @@
     "pg": "^7.7.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.42.0"
+  },
+  "engines": {
+    "node": "9.8.0"
   }
 }
