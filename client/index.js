@@ -119,13 +119,9 @@ function createNewDeleteBtn(parentItem, marker) {
   return newBtn;
 }
 
-function deleteFromItinerary(item, marker) {
-  console.log(item.textContent, state.selectedAttractions)
+function deleteFromItinerary(item, marker) { // delete marker, item, and from state
   item.remove(); marker.remove()
-  // state.selectedAttractions = state.selectedAttractions.length
-  //   ?
-  const copy = state.selectedAttractions.filter(attraction => attraction !== `${item.textContent}`)
-    // : []
-  // state.selectedAttractions = 0
-  console.log(copy, state.selectedAttractions)
+  state.selectedAttractions = state.selectedAttractions.length > 1
+    ? state.selectedAttractions.filter(attraction => attraction !== `${item.textContent}`)
+    : []
 }
